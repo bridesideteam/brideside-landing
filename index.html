@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BrideSide — Your Bridal Pocket Bestie</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #3a2a1e;        /* deep cocoa brown for text */
+    --white: #f5f0e8;        /* ivory/cream bg */
+    --warm: #ede8de;         /* slightly deeper cream for panels */
+    --accent: #b8966e;       /* soft gold/champagne */
+    --cocoa: #5c2d1e;        /* dark cocoa brown (logo "side" color) */
+    --muted: #9e8e7e;        /* warm muted taupe */
+    --line: rgba(58,42,30,0.1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 28px 48px;
+    background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+  }
+  .logo .bride-word { color: var(--accent); font-size: 1.5rem; }
+  .logo .side-word {
+    color: var(--cocoa);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    align-self: flex-end;
+    margin-bottom: 1px;
+  }
+  .nav-cta {
+    background: var(--cocoa);
+    color: var(--white);
+    border: none;
+    padding: 11px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 90px;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 80px 80px;
+    position: relative;
+  }
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 15%; bottom: 15%;
+    width: 1px;
+    background: var(--line);
+  }
+
+  .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 300;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .tagline {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 380px;
+    margin-bottom: 48px;
+  }
+
+  .waitlist-form {
+    display: flex;
+    gap: 0;
+    max-width: 420px;
+  }
+  .waitlist-form input {
+    flex: 1;
+    border: 1px solid var(--cocoa);
+    border-right: none;
+    background: transparent;
+    padding: 14px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--black);
+    outline: none;
+  }
+  .waitlist-form input::placeholder { color: var(--muted); }
+  .waitlist-form button {
+    background: var(--cocoa);
+    color: var(--white);
+    border: 1px solid var(--cocoa);
+    padding: 14px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+  }
+  .waitlist-form button:hover { background: var(--accent); border-color: var(--accent); }
+
+  .social-proof {
+    margin-top: 36px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .avatars {
+    display: flex;
+  }
+  .avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    margin-right: -8px;
+    font-size: 0.65rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--warm);
+    color: var(--black);
+  }
+
+  /* HERO RIGHT - visual panel */
+  .hero-right {
+    background: var(--warm);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 60px;
+  }
+
+  .hero-visual {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  /* Floating card UI mockups */
+  .card {
+    background: var(--white);
+    border: 1px solid rgba(14,14,14,0.08);
+    border-radius: 2px;
+    padding: 20px 24px;
+    box-shadow: 0 8px 40px rgba(14,14,14,0.08);
+    animation: float 6s ease-in-out infinite;
+  }
+  .card-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    margin-bottom: 14px;
+  }
+  .progress-row { margin-bottom: 8px; }
+  .progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .progress-bar {
+    height: 3px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 1s ease;
+  }
+
+  .card-float-1 {
+    position: absolute;
+    top: -20px; right: -30px;
+    width: 220px;
+    animation-delay: 0s;
+    animation: float 5s ease-in-out infinite;
+  }
+  .card-float-2 {
+    position: relative;
+    width: 100%;
+    animation: float 7s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+  .card-float-3 {
+    position: absolute;
+    bottom: -30px; left: -30px;
+    width: 200px;
+    animation: float 6s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+
+  /* mood tags */
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .tag {
+    border: 1px solid var(--line);
+    padding: 4px 10px;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    border-radius: 100px;
+    color: var(--muted);
+  }
+  .tag.active { border-color: var(--accent); color: var(--accent); }
+
+  .rsvp-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .rsvp-row:last-child { border: none; }
+  .rsvp-name { font-size: 0.78rem; }
+  .rsvp-badge {
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .rsvp-yes { background: #e8f5e9; color: #388e3c; }
+  .rsvp-no { background: #fce4ec; color: #c62828; }
+  .rsvp-pending { background: #fff8e1; color: #f57f17; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+
+  /* deco */
+  .deco-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    opacity: 0.15;
+  }
+  .deco-circle-1 { width: 300px; height: 300px; top: -80px; right: -80px; }
+  .deco-circle-2 { width: 180px; height: 180px; bottom: 40px; left: 20px; }
+
+  /* TAGLINE STRIP */
+  .strip {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
+    overflow: hidden;
+    background: var(--cocoa);
+    display: flex;
+    gap: 0;
+  }
+  .strip-track {
+    display: flex;
+    gap: 60px;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .strip-track span {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+  }
+  .strip-track span::after {
+    content: '✦';
+    font-size: 0.5rem;
+    color: var(--accent);
+    opacity: 1;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* FEATURES */
+  .features {
+    padding: 120px 80px;
+  }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 72px;
+  }
+  .section-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.15;
+  }
+  h2 em { font-style: italic; }
+  .section-note {
+    font-size: 0.88rem;
+    color: var(--muted);
+    max-width: 280px;
+    line-height: 1.7;
+    text-align: right;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--line);
+  }
+  .feature-card {
+    background: var(--white);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .feature-card:hover { background: var(--warm); }
+  .feature-card:hover .feature-icon { transform: scale(1.1) rotate(-5deg); }
+
+  .feature-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    font-weight: 300;
+    color: var(--line);
+    line-height: 1;
+    margin-bottom: 24px;
+    transition: color 0.3s;
+  }
+  .feature-card:hover .feature-number { color: rgba(201,169,110,0.2); }
+
+  .feature-icon {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    display: block;
+    transition: transform 0.3s;
+  }
+  .feature-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+  .feature-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+  .feature-tag {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+
+  /* FOR WHO */
+  .for-who {
+    background: var(--cocoa);
+    color: var(--white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 60vh;
+  }
+  .for-who-panel {
+    padding: 100px 80px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .for-who-panel:last-child { border-right: none; }
+  .for-who-panel:hover { background: rgba(255,255,255,0.03); }
+
+  .for-who-panel .section-eyebrow { color: var(--accent); }
+  .for-who-panel h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+  .for-who-panel h3 em { font-style: italic; }
+  .for-who-panel p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.75;
+    max-width: 340px;
+  }
+  .for-who-list {
+    list-style: none;
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .for-who-list li {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.6);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .for-who-list li::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* CTA BOTTOM */
+  .cta-section {
+    padding: 140px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(184,150,110,0.12) 0%, transparent 70%);
+  }
+  .cta-section .eyebrow { justify-content: center; margin-bottom: 28px; }
+  .cta-section h2 { max-width: 640px; margin: 0 auto 24px; }
+  .cta-section .tagline { margin: 0 auto 48px; text-align: center; max-width: 440px; }
+  .cta-form {
+    display: flex;
+    gap: 0;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .cta-form input {
+    flex: 1;
+    border: 1px solid var(--cocoa);
+    border-right: none;
+    background: transparent;
+    padding: 16px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--black);
+    outline: none;
+  }
+  .cta-form input::placeholder { color: var(--muted); }
+  .cta-form button {
+    background: var(--cocoa);
+    color: var(--white);
+    border: 1px solid var(--cocoa);
+    padding: 16px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .cta-form button:hover { background: var(--accent); border-color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 36px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer .logo { font-size: 1.1rem; }
+  .footer-note { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.05em; }
+
+  /* ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 60px 24px 40px; }
+    .hero-left::after { display: none; }
+    .hero-right { min-height: 400px; padding: 40px 24px; }
+    .features { padding: 80px 24px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .section-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .section-note { text-align: left; }
+    .for-who { grid-template-columns: 1fr; }
+    .for-who-panel { padding: 60px 24px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .cta-section { padding: 80px 24px; }
+    .cta-form { flex-direction: column; }
+    .cta-form input { border-right: 1px solid var(--black); border-bottom: none; }
+    footer { flex-direction: column; gap: 16px; padding: 28px 24px; text-align: center; }
+    .waitlist-form { flex-direction: column; }
+    .waitlist-form input { border-right: 1px solid var(--black); border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo"><span class="bride-word">BRIDE</span><span class="side-word">side</span></a>
+  <button class="nav-cta" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join the Waitlist</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="eyebrow">Your bridal pocket bestie</div>
+    <h1>
+      From <em>"Yes"</em><br>to <em>"I do"</em><br>— handled.
+    </h1>
+    <p class="tagline">Helping brides manage one or more weddings without losing your mind. Every detail, every vendor, every moment — in one beautiful place.</p>
+    <form class="waitlist-form" onsubmit="handleSubmit(event)">
+      <input type="email" placeholder="your@email.com" required />
+      <button type="submit">Join Waitlist</button>
+    </form>
+    <div class="social-proof">
+      <div class="avatars">
+        <div class="avatar">S</div>
+        <div class="avatar">M</div>
+        <div class="avatar">A</div>
+        <div class="avatar">J</div>
+      </div>
+      <span>240+ brides already on the list</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="deco-circle deco-circle-1"></div>
+    <div class="deco-circle deco-circle-2"></div>
+    <div class="hero-visual">
+      <!-- Card 1: Budget floating top right -->
+      <div class="card card-float-1">
+        <div class="card-label">Budget Tracker</div>
+        <div class="card-title">Summer Wedding</div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Venue</span><span>$8,200</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:82%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Catering</span><span>$4,100</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div>
+        </div>
+      </div>
+
+      <!-- Card 2: Moodboard center -->
+      <div class="card card-float-2">
+        <div class="card-label">AI Moodboard</div>
+        <div class="card-title">Garden Romance</div>
+        <div class="tag-row">
+          <span class="tag active">Soft Florals</span>
+          <span class="tag active">Golden Hour</span>
+          <span class="tag">Rustic</span>
+          <span class="tag active">Minimalist</span>
+          <span class="tag">Boho</span>
+          <span class="tag">Classic</span>
+        </div>
+      </div>
+
+      <!-- Card 3: RSVP bottom left -->
+      <div class="card card-float-3">
+        <div class="card-label">RSVP</div>
+        <div class="rsvp-row"><span class="rsvp-name">Emma & James</span><span class="rsvp-badge rsvp-yes">Yes ✓</span></div>
+        <div class="rsvp-row"><span class="rsvp-name">Olivia Chen</span><span class="rsvp-badge rsvp-yes">Yes ✓</span></div>
+        <div class="rsvp-row"><span class="rsvp-name">Marcus Webb</span><span class="rsvp-badge rsvp-pending">Pending</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE STRIP -->
+<div class="strip">
+  <div class="strip-track">
+    <span>AI Moodboard Generator</span>
+    <span>Wedding Website Builder</span>
+    <span>Invitation & RSVP Management</span>
+    <span>Vendor Management</span>
+    <span>Budget Tracker</span>
+    <span>AI Moodboard Generator</span>
+    <span>Wedding Website Builder</span>
+    <span>Invitation & RSVP Management</span>
+    <span>Vendor Management</span>
+    <span>Budget Tracker</span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">Everything you need</div>
+      <h2>All the tools.<br><em>None of the chaos.</em></h2>
+    </div>
+    <p class="section-note">Launching with the features brides actually need, with more rolling out soon.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-number">01</div>
+      <span class="feature-icon">✦</span>
+      <div class="feature-name">AI Moodboard Generator</div>
+      <p class="feature-desc">Describe your dream wedding and watch it come to life. Our AI curates stunning visual boards that capture your exact vision — ready to share with vendors in seconds.</p>
+      <span class="feature-tag">Launching Soon</span>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-number">02</div>
+      <span class="feature-icon">◇</span>
+      <div class="feature-name">Wedding Website Builder</div>
+      <p class="feature-desc">Build a gorgeous wedding website in minutes. Share your story, details, and registry. No coding, no headaches — just beautiful pages that feel like you.</p>
+      <span class="feature-tag">Launching Soon</span>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-number">03</div>
+      <span class="feature-icon">○</span>
+      <div class="feature-name">Invitation & RSVP Manager</div>
+      <p class="feature-desc">Send digital invitations and track RSVPs in real time. Know exactly who's coming, dietary needs, plus/ones — all organized and always at your fingertips.</p>
+      <span class="feature-tag">Launching Soon</span>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-number">04</div>
+      <span class="feature-icon">□</span>
+      <div class="feature-name">Vendor Management</div>
+      <p class="feature-desc">Keep every vendor, contract, and contact in one place. Track deposits, communicate seamlessly, and never wonder who to call again.</p>
+      <span class="feature-tag">Coming Next</span>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-number">05</div>
+      <span class="feature-icon">△</span>
+      <div class="feature-name">Budget Tracker</div>
+      <p class="feature-desc">Set your budget, track every expense, and stay on track without the spreadsheet stress. Real-time insights so you always know where you stand.</p>
+      <span class="feature-tag">Coming Next</span>
+    </div>
+    <div class="feature-card reveal" style="background: var(--warm);">
+      <div class="feature-number" style="color: rgba(201,169,110,0.25);">+</div>
+      <span class="feature-icon">◎</span>
+      <div class="feature-name" style="font-style: italic;">More on the way</div>
+      <p class="feature-desc">Guest seating, day-of timeline, vendor reviews, team collaboration for planners — we're building the ultimate bridal toolkit.</p>
+      <span class="feature-tag">In Planning</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHO -->
+<section class="for-who">
+  <div class="for-who-panel reveal">
+    <div class="section-eyebrow">For the Bride</div>
+    <h3>Your wedding,<br><em>effortlessly</em><br>organized</h3>
+    <p>Whether you're a meticulous planner or you've just said yes and have no idea where to start — BrideSide keeps you calm, confident, and completely in control.</p>
+    <ul class="for-who-list">
+      <li>Plan everything in one beautiful dashboard</li>
+      <li>Share access with your maid of honour or mom</li>
+      <li>Stay on budget without the guilt</li>
+      <li>Get AI-powered inspiration, instantly</li>
+    </ul>
+  </div>
+  <div class="for-who-panel reveal">
+    <div class="section-eyebrow">For the Wedding Planner</div>
+    <h3>Manage <em>multiple</em><br>weddings without<br>missing a beat</h3>
+    <p>Juggling five brides at once? BrideSide is built for pros who need a smarter way to manage multiple clients, timelines, and vendors without losing their sanity.</p>
+    <ul class="for-who-list">
+      <li>Switch between client weddings seamlessly</li>
+      <li>Centralized vendor & budget management</li>
+      <li>Client portals to keep brides in the loop</li>
+      <li>Scale your business without scaling your stress</li>
+    </ul>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-section" id="waitlist">
+  <div class="cta-bg"></div>
+  <div class="eyebrow">Be first in line</div>
+  <h2>Your perfect wedding<br>starts <em>here</em></h2>
+  <p class="tagline">Join the waitlist for early access, founding member perks, and a say in what we build next.</p>
+  <form class="cta-form" onsubmit="handleSubmit(event)">
+    <input type="email" placeholder="your@email.com" required />
+    <button type="submit">Join the Waitlist</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo"><span class="bride-word">BRIDE</span><span class="side-word">side</span></a>
+  <span class="footer-note">On your side from "Yes" to "I do" &nbsp;✦</span>
+  <span class="footer-note">© 2025 BrideSide. All rights reserved.</span>
+</footer>
+
+<script>
+  // ================================================
+  // 👇 STEP 1: Paste your SheetDB API URL here
+  // Get it free at https://sheetdb.io
+  // It looks like: https://sheetdb.io/api/v1/XXXXXXXXXX
+  // ================================================
+  const SHEETDB_URL = 'https://sheetdb.io/api/v1/br9v0pe0tx5kc';
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Stagger feature cards
+  document.querySelectorAll('.feature-card').forEach((c, i) => {
+    c.style.transitionDelay = `${i * 0.08}s`;
+  });
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const input = e.target.querySelector('input');
+    const email = input.value.trim();
+
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
+    input.disabled = true;
+
+    try {
+      const res = await fetch(SHEETDB_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          data: {
+            email: email,
+            date: new Date().toLocaleDateString('en-CA'),
+            time: new Date().toLocaleTimeString(),
+            source: 'Landing Page'
+          }
+        })
+      });
+
+      if (res.ok) {
+        btn.textContent = "✓ You're on the list!";
+        btn.style.background = '#5c2d1e';
+        btn.style.borderColor = '#5c2d1e';
+        input.value = '';
+      } else {
+        throw new Error('Server error');
+      }
+    } catch (err) {
+      btn.textContent = 'Try again';
+      btn.disabled = false;
+      btn.style.background = '#b8966e';
+      btn.style.borderColor = '#b8966e';
+      input.disabled = false;
+      console.error('Submission error:', err);
+    }
+  }
+</script>
+</body>
+</html>
